@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+        }
+        input {
+            margin-bottom: 10px;
+            width: 100%;
+            padding: 8px;
+        }
+        .result {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Price Calculator</h1>
+    <label for="price">Input Price in USD:</label>
+    <input type="number" id="price" placeholder="Enter price in USD" required>
+
+    <label for="discount">Discount Amount in USD:</label>
+    <input type="number" id="discount" placeholder="Enter discount amount" required>
+
+    <label for="tax">Tax Amount in USD:</label>
+    <input type="number" id="tax" placeholder="Enter tax amount" required>
+
+    <label for="conversionRate">Conversion Rate (USD to INR):</label>
+    <input type="number" id="conversionRate" placeholder="Enter conversion rate" required>
+
+    <button onclick="calculateTotal()">Calculate</button>
+
+    <div class="result" id="result"></div>
+
+    <script>
+        function calculateTotal() {
+            let price = parseFloat(document.getElementById('price').value);
+            let discount = parseFloat(document.getElementById('discount').value);
+            let tax = parseFloat(document.getElementById('tax').value);
+            let conversionRate = parseFloat(document.getElementById('conversionRate').value);
+
+            if (isNaN(price) || isNaN(discount) || isNaN(tax) || isNaN(conversionRate)) {
+                document.getElementById('result').innerText = 'Please fill out all fields with valid numbers.';
+                return;
+            }
+
+            let totalUSD = price - discount + tax;
+            let totalINR = totalUSD * conversionRate;
+
+            document.getElementById('result').innerHTML = `
+                Total Price in USD: $${totalUSD.toFixed(2)}<br>
+                Total Price in INR: ₹${totalINR.toFixed(2)}
+            `;
+        }
+    </script>
+</body>
+</html>
