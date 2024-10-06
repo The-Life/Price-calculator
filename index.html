@@ -26,12 +26,16 @@
     <h1>Price Calculator</h1>
     <label for="price">Input Price in USD:</label>
     <input type="number" id="price" placeholder="Enter price in USD" required>
+    <p>Price in INR: <span id="priceInINR"></span></p>
 
     <label for="discount">Discount Amount in USD:</label>
     <input type="number" id="discount" placeholder="Enter discount amount" required>
+    <p>Discount in INR: <span id="discountInINR"></span></p>
 
-    <label for="tax">Tax Amount in USD:</label>
-    <input type="number" id="tax" placeholder="Enter tax amount" required>
+    <label for="tax">Tax Percentage (%):</label>
+    <input type="number" id="tax" placeholder="Enter tax percentage" required>
+    <p>Tax Amount in USD: <span id="taxAmountUSD"></span></p>
+    <p>Tax in INR: <span id="taxInINR"></span></p>
 
     <label for="conversionRate">Conversion Rate (USD to INR):</label>
     <input type="number" id="conversionRate" placeholder="Enter conversion rate" required>
@@ -44,16 +48,26 @@
         function calculateTotal() {
             let price = parseFloat(document.getElementById('price').value);
             let discount = parseFloat(document.getElementById('discount').value);
-            let tax = parseFloat(document.getElementById('tax').value);
+            let taxPercentage = parseFloat(document.getElementById('tax').value);
             let conversionRate = parseFloat(document.getElementById('conversionRate').value);
 
-            if (isNaN(price) || isNaN(discount) || isNaN(tax) || isNaN(conversionRate)) {
+            if (isNaN(price) || isNaN(discount) || isNaN(taxPercentage) || isNaN(conversionRate)) {
                 document.getElementById('result').innerText = 'Please fill out all fields with valid numbers.';
                 return;
             }
 
-            let totalUSD = price - discount + tax;
+            let taxAmountUSD = (price * taxPercentage) / 100;
+            let totalUSD = price - discount + taxAmountUSD;
             let totalINR = totalUSD * conversionRate;
+
+            let priceInINR = price * conversionRate;
+            let discountInINR = discount * conversionRate;
+            let taxInINR = taxAmountUSD * conversionRate;
+
+            document.getElementById('taxAmountUSD').innerText = `$${taxAmountUSD.toFixed(2)}`;
+            document.getElementById('priceInINR').innerText = `₹${priceInINR.toFixed(2)}`;
+            document.getElementById('discountInINR').innerText = `₹${discountInINR.toFixed(2)}`;
+            document.getElementById('taxInINR').innerText = `₹${taxInINR.toFixed(2)}`;
 
             document.getElementById('result').innerHTML = `
                 Total Price in USD: $${totalUSD.toFixed(2)}<br>
